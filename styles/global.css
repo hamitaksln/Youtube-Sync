@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .site-container {
+        @apply bg-blue-900
+        w-screen h-screen;
+    }
+}
