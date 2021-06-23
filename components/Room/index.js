@@ -1,5 +1,5 @@
-import YTPlayer from "../YTPlayer"
-import ChatBox from "../ChatBox"
+import YTPlayer from "../ytplayer"
+import ChatBox from "../chat-box"
 
 function Room() {
     return (
