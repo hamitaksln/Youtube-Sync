@@ -21,16 +21,15 @@ function ChatUsers() {
                 {users.length} Users
             </div>
             <div className="w-full h-full flex flex-wrap  gap-2 overflow-y-auto overflow-x-hidden">
-                {users.map((user) => (
-                    <div className="w-[31%] h-12 flex gap-4 items-center p-2 px-2 border rounded cursor-pointer hover:bg-gray-600">
+                {users.map((user,index) => (
+                    <div key={index} className="w-[100%] xl:w-[45%] 2xl:w-[31%] flex gap-4 items-center p-2 px-2 border rounded cursor-pointer hover:bg-gray-600">
                         <div
                             className={cx("h-full w-1 bg-red-400 rounded", {
                                 "bg-yellow-500": user.permission
                             })}
                         ></div>
-                        <div className="w-full">
-                            {" "}
-                            <span>{user.username}</span>
+                        <div className="flex flex-col truncate">
+                            <span className="truncate">{user.username}</span>
                         </div>
                     </div>
                 ))}
