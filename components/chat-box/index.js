@@ -4,9 +4,11 @@ function ChatBox() {
     return (
         <div
             style={{ display: "grid", gridTemplateRows: "3fr 1fr" }}
-            className="w-full h-full bg-gray-600"
+            className="w-full h-full bg-gray-600 rounded overflow-hidden"
         >
-            <ChatMessages></ChatMessages>
+            <div className="w-full">
+                <ChatMessages></ChatMessages>
+            </div>
             <ChatUsers></ChatUsers>
         </div>
     )

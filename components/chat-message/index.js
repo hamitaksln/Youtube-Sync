@@ -21,7 +21,7 @@ const getRandomColor = () => {
 function ChatMessage({ message }) {
     const { isSelf, username, text } = message
 
-    getRandomColor()
+    // getRandomColor()
     return (
         <div
             className={cx("w-full flex ", {

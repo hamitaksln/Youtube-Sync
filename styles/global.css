@@ -9,7 +9,12 @@
     }
 }
 
-@media only screen and (min-width: 1100px) {
+*{
+    padding:0;
+    box-sizing: border-box;
+}
+
+/* @media only screen and (min-width: 1100px) {
     ::-webkit-scrollbar {
         width: 0.5em;
     }
@@ -21,4 +26,16 @@
     ::-webkit-scrollbar-thumb {
         background-color: #171717;
     }
+} */
+
+::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #404040;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #171717;
 }

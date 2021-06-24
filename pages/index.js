@@ -12,9 +12,16 @@ function HomePage() {
                     content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
                 />
             </Head>
-            <main className="w-full h-full flex flex-col">
-                <Header></Header>
-                <Room></Room>
+            <main
+                // style={{ display: "grid", gridTemplateRows: "1fr 2fr" }}
+                className="w-full h-full flex flex-col"
+            >
+                <div className="w-full h-24">
+                    <Header></Header>
+                </div>
+                <div className="w-full h-full bg-gray-500">
+                    <Room></Room>
+                </div>
             </main>
         </div>
     )
