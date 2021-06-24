@@ -41,6 +41,7 @@ function ChatMessage({ message }) {
                         </span>
                     )}
                     <span>{text}</span>
+                    
                 </div>
             </div>
         </div>
