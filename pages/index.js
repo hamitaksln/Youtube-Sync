@@ -1,6 +1,6 @@
 import Head from "next/head"
-import Room from "../components/Room"
-import Header from "../components/Header"
+import Room from "../components/room"
+import Header from "../components/header"
 
 function HomePage() {
     return (
