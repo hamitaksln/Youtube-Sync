@@ -3,10 +3,15 @@
 @tailwind utilities;
 
 @layer components {
+    
     .site-container {
         @apply bg-blue-900
         w-screen h-screen;
     }
+}
+
+body{
+    @apply bg-gray-900
 }
 
 *{
@@ -29,7 +34,8 @@
 } */
 
 ::-webkit-scrollbar {
-    width: 0.5em;
+    width: 0.5rem;
+    height: 0.5rem;
 }
 
 ::-webkit-scrollbar-track {

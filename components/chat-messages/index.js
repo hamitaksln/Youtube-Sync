@@ -78,10 +78,10 @@ function ChatMessages() {
     }
 
     return (
-        <div className="w-full h-full flex flex-col justify-between bg-gray-600 gap-2 py-2">
+        <div className="w-full h-full flex flex-col justify-between rounded-t bg-gray-600 gap-2 py-2">
             <div
                 ref={messagesRef}
-                className="w-full h-[60vh] flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-2"
+                className="w-full xl:h-[60vh] h-[40vh] flex flex-col gap-2 overflow-y-auto overflow-x-hidden p-2"
             >
                 {messages.map((message, index) => (
                     <ChatMessage key={index} message={message}></ChatMessage>

@@ -1,39 +1,48 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import Youtube from "react-youtube"
 import openSocket from "socket.io-client"
 import { PLAYER_STATE } from "../../constants"
 
-function YTPlayer() {
+function YTPlayer({setUsers}) {
     const [socket, setSocket] = useState()
     const [playerState, setPlayerState] = useState(null)
     const [ytPlayer, setYtPlayer] = useState()
-    const [serverPlayerState, setServerPlayerState] = useState()
+    const [playerStartingTime, setPlayerStartingTime] = useState(0)
+
 
     const videoTimeStack = useRef([])
 
     useEffect(() => {
-        setSocket(openSocket("http://localhost:5000"))
+        // setSocket(openSocket("http://localhost:5000"))
+        setSocket(openSocket("http://192.168.1.37:5000"))
+        console.log("SOCKET INITIATED", socket)
         // setSocket(openSocket())
     }, [])
 
     useEffect(() => {
         if (socket) {
-            // socket.on("video-play-status", (playerStatus) => {
-            //     // console.log(playerStatus);
-            //     setPlayerState(playerStatus)
-            //     setIsVideoPlaying(playerStatus)
-            //     setPlayer({ play: playerStatus, server: true })
-            // })
-
-            socket.on("set-player-status", (playerState) => {
-                console.log(playerState)
-                // setServerPlayerState(playerState)
-                setPlayerState(playerState)
-                // setPlayerState({ status: playerState, fromServer: true })
+            console.log("SOCKET")
+            socket.on("starting-time", (currentServerTime) => {
+                console.log(currentServerTime, ytPlayer)
+                setPlayerStartingTime(currentServerTime)
             })
 
+            socket.on("users", (users) => {
+                console.log(users)
+                setUsers(users)
+            })
+        }
+
+        if (socket && ytPlayer) {
+            console.log("SOCKET LISTENING")
+            socket.on("set-player-status", (playerState) => {
+                console.log(playerState)
+                setPlayerState(playerState)
+            })
             socket.on("set-player-current-time", (playerCurrentTime) => {
+                console.log("set-player-current-time")
                 if (ytPlayer) {
+                    console.log("coming from serveR: " + playerCurrentTime)
                     ytPlayer.seekTo(playerCurrentTime, true)
                 }
             })
@@ -47,18 +56,8 @@ function YTPlayer() {
             if (playerState) {
                 socket.emit("set-player-status", playerState)
             }
-            // if (!playerState.fromServer) {
-            //     socket.emit("set-player-status", playerState)
-            // } else {
-            //     setPlayerState((prevValue) => ({
-            //         ...prevValue,
-            //         fromServer: false
-            //     }))
-            // }
             if (playerState === "playing") {
                 ytPlayer.playVideo()
-
-                // socket.emit("set-player-status",playerState)
             } else if (playerState === "paused") {
                 ytPlayer.pauseVideo()
             }
@@ -67,8 +66,16 @@ function YTPlayer() {
 
     const handleTimeChanging = (player) => {
         function updateTime() {
-            //   var oldTime = videoTime;
             if (player && player.getCurrentTime) {
+                if (socket) {
+                    if (player.getPlayerState() === 1) {
+                        console.log("player current time is updated")
+                        socket.emit(
+                            "update-server-time",
+                            player.getCurrentTime()
+                        )
+                    }
+                }
                 videoTimeStack.current.push(player.getCurrentTime())
 
                 if (videoTimeStack.current.length > 2) {
@@ -90,20 +97,25 @@ function YTPlayer() {
                         player.getCurrentTime()
                     )
 
-                    // if (shouldEmitTime) {
-                    //     socket.emit(
-                    //         "video-current-time",
-                    //         player.getCurrentTime()
-                    //     )
-                    // }
+                    if (PLAYER_STATE[player.getPlayerState()]) {
+                        socket.emit(
+                            "set-player-status",
+                            PLAYER_STATE[player.getPlayerState()]
+                        )
+                    }
                 }
-                // else {
-                //     setShouldEmitTime(true)
-                // }
             }
         }
         setInterval(updateTime, 1000)
     }
+
+    const handlePlayerStartingTime = useCallback(
+        (player) => {
+            console.log(playerStartingTime)
+            player.seekTo(playerStartingTime)
+        },
+        [playerStartingTime]
+    )
 
     const handleStateChange = (event) => {
         const playerState = PLAYER_STATE[event.data]
@@ -114,10 +126,13 @@ function YTPlayer() {
         const player = event.target
         setYtPlayer(player)
         handleTimeChanging(player)
+        handlePlayerStartingTime(player)
+        console.log("PLAYER INITIATED")
     }
 
     return (
         <div className="w-full h-full bg-red-600 rounded overflow-hidden">
+            <div className="absolute text-white">{socket && socket.id}</div>
             <Youtube
                 // ref={ref}
                 onClick={() => console.log("sa")}
