@@ -1,8 +1,18 @@
 import Head from "next/head"
 import Room from "../components/room"
 import Header from "../components/header"
+import {useEffect} from "react"
 
 function HomePage() {
+
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/hockeystack@latest/hockeystack.min.js";
+        script.async = true;
+        script.onload = () => HockeyStack.init('f7db3b55c41e68271206b6c2503bd7');
+        document.head.appendChild(script);
+      }, []);
+
     return (
         <div className="site-container">
             <Head>
