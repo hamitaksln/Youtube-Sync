@@ -3,8 +3,8 @@ import Youtube from "react-youtube"
 import openSocket from "socket.io-client"
 import { PLAYER_STATE } from "../../constants"
 
-function YTPlayer({setUsers}) {
-    const [socket, setSocket] = useState()
+function YTPlayer({socket,setSocket,setUsers}) {
+    // const [socket, setSocket] = useState()
     const [playerState, setPlayerState] = useState(null)
     const [ytPlayer, setYtPlayer] = useState()
     const [playerStartingTime, setPlayerStartingTime] = useState(0)

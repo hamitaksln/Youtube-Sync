@@ -2,63 +2,61 @@ import { useState, useEffect, useRef } from "react"
 import ChatMessage from "../chat-message"
 import ChatInput from "../chat-input"
 
-function ChatMessages() {
-    const [messages, setMessages] = useState([
-        {
-            isSelf: true,
-            username: null,
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit ipsum dolor sit amet consectetur adipisicing elit"
-        },
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        },
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        },
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        }
-        ,
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        }
-        ,
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        }
-        ,
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        }
-        ,
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        },
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        },
-        {
-            isSelf: false,
-            username: "batigunemrah",
-            text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-        }
-    ])
+const messagesSample = [
+    {
+        isSelf: true,
+        username: null,
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    },
+    {
+        isSelf: false,
+        username: "batigunemrah",
+        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
+    }
+]
+
+function ChatMessages({ socket }) {
+    const [messages, setMessages] = useState([])
 
     const messagesRef = useRef()
 
@@ -66,15 +64,34 @@ function ChatMessages() {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight
     }, [messages])
 
+    useEffect(() => {
+        if (socket) {
+            socket.on("messages", (serverMessages) => {
+                console.log(serverMessages)
+                if (serverMessages) {
+                    setMessages(
+                        serverMessages.map((message) => ({
+                            isSelf: true,
+                            username: null,
+                            text: message
+                        }))
+                    )
+                }
+            })
+        }
+    }, [socket])
+
     const sendNewMessage = (text) => {
-        setMessages((prevValue) => [
-            ...prevValue,
-            {
-                isSelf: true,
-                username: null,
-                text
-            }
-        ])
+        // setMessages((prevValue) => [
+        //     ...prevValue,
+        //     {
+        //         isSelf: true,
+        //         username: null,
+        //         text
+        //     }
+        // ])
+
+        socket.emit("new-message", text)
     }
 
     return (

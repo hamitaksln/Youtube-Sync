@@ -30,8 +30,8 @@ function ChatMessage({ message }) {
         >
             <div
                 className={cx(
-                    "max-w-[16rem] h-full bg-gray-700 border-gray-800 rounded-md border p-2 text-white",
-                    { "bg-gray-500": isSelf }
+                    "max-w-[16rem] h-full  border-gray-800 rounded-md border p-2 text-white",
+                    { "bg-gray-500": isSelf,"bg-gray-700":!isSelf }
                 )}
             >
                 <div className="flex flex-col">
