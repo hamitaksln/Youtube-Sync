@@ -1,48 +1,36 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import Youtube from "react-youtube"
-import openSocket from "socket.io-client"
+import { useSelector } from "react-redux"
 import { PLAYER_STATE } from "../../constants"
 
-function YTPlayer({socket,setSocket,setUsers}) {
-    // const [socket, setSocket] = useState()
+function YTPlayer() {
+    const socket = useSelector((state) => state.socketReducer.socket)
+
     const [playerState, setPlayerState] = useState(null)
     const [ytPlayer, setYtPlayer] = useState()
     const [playerStartingTime, setPlayerStartingTime] = useState(0)
 
-
     const videoTimeStack = useRef([])
 
     useEffect(() => {
-        // setSocket(openSocket("http://localhost:5000"))
-        setSocket(openSocket("http://192.168.1.37:5000"))
-        console.log("SOCKET INITIATED", socket)
-        // setSocket(openSocket())
-    }, [])
-
-    useEffect(() => {
         if (socket) {
-            console.log("SOCKET")
+            // console.log("SOCKET")
             socket.on("starting-time", (currentServerTime) => {
                 console.log(currentServerTime, ytPlayer)
                 setPlayerStartingTime(currentServerTime)
-            })
-
-            socket.on("users", (users) => {
-                console.log(users)
-                setUsers(users)
             })
         }
 
         if (socket && ytPlayer) {
             console.log("SOCKET LISTENING")
             socket.on("set-player-status", (playerState) => {
-                console.log(playerState)
+                // console.log(playerState)
                 setPlayerState(playerState)
             })
             socket.on("set-player-current-time", (playerCurrentTime) => {
-                console.log("set-player-current-time")
+                // console.log("set-player-current-time")
                 if (ytPlayer) {
-                    console.log("coming from serveR: " + playerCurrentTime)
+                    // console.log("coming from serveR: " + playerCurrentTime)
                     ytPlayer.seekTo(playerCurrentTime, true)
                 }
             })
@@ -69,7 +57,7 @@ function YTPlayer({socket,setSocket,setUsers}) {
             if (player && player.getCurrentTime) {
                 if (socket) {
                     if (player.getPlayerState() === 1) {
-                        console.log("player current time is updated")
+                        // console.log("player current time is updated")
                         socket.emit(
                             "update-server-time",
                             player.getCurrentTime()

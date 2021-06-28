@@ -19,7 +19,7 @@ const getRandomColor = () => {
 }
 
 function ChatMessage({ message }) {
-    const { isSelf, username, text } = message
+    const { isSelf, username, text, color } = message
 
     // getRandomColor()
     return (
@@ -31,17 +31,14 @@ function ChatMessage({ message }) {
             <div
                 className={cx(
                     "max-w-[16rem] h-full  border-gray-800 rounded-md border p-2 text-white",
-                    { "bg-gray-500": isSelf,"bg-gray-700":!isSelf }
+                    { "bg-gray-500": isSelf, "bg-gray-700": !isSelf }
                 )}
             >
                 <div className="flex flex-col">
                     {!isSelf && (
-                        <span style={{ color: `${getRandomColor()}` }}>
-                            {username}
-                        </span>
+                        <span style={{ color: color }}>{username}</span>
                     )}
                     <span>{text}</span>
-                    
                 </div>
             </div>
         </div>

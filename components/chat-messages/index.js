@@ -1,61 +1,10 @@
 import { useState, useEffect, useRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import ChatMessage from "../chat-message"
 import ChatInput from "../chat-input"
 
-const messagesSample = [
-    {
-        isSelf: true,
-        username: null,
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        isSelf: false,
-        username: "batigunemrah",
-        text: "Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    }
-]
-
-function ChatMessages({ socket }) {
+function ChatMessages({ userColor }) {
+    const socket = useSelector((state) => state.socketReducer.socket)
     const [messages, setMessages] = useState([])
 
     const messagesRef = useRef()
@@ -66,32 +15,26 @@ function ChatMessages({ socket }) {
 
     useEffect(() => {
         if (socket) {
-            socket.on("messages", (serverMessages) => {
-                console.log(serverMessages)
-                if (serverMessages) {
-                    setMessages(
-                        serverMessages.map((message) => ({
-                            isSelf: true,
-                            username: null,
-                            text: message
-                        }))
-                    )
+            socket.on("new-message", (newMessage) => {
+                console.log(newMessage, socket.id)
+                const isSelf = newMessage.username === socket.id
+                if (newMessage) {
+                    setMessages((prevValue) => [
+                        ...prevValue,
+                        {
+                            isSelf,
+                            username: newMessage.username,
+                            text: newMessage.text,
+                            color: newMessage.color
+                        }
+                    ])
                 }
             })
         }
     }, [socket])
 
     const sendNewMessage = (text) => {
-        // setMessages((prevValue) => [
-        //     ...prevValue,
-        //     {
-        //         isSelf: true,
-        //         username: null,
-        //         text
-        //     }
-        // ])
-
-        socket.emit("new-message", text)
+        socket.emit("new-message", { text, color: userColor })
     }
 
     return (
