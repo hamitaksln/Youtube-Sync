@@ -22,7 +22,8 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",

@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Link from "next/link"
+import Home from "../components/home"
 import Room from "../components/room"
 import Header from "../components/header"
 import { useEffect } from "react"
@@ -30,15 +31,16 @@ function HomePage() {
                 />
             </Head>
             <main className="w-full h-full flex flex-col">
-                <div className="w-full h-24">
-                    {/* <Link href="/room/123">
+                <Home></Home>
+                {/* <div className="w-full h-24">
+                    <Link href="/room/123">
                         <a>sa</a>
-                    </Link> */}
+                    </Link>
                     <Header></Header>
                 </div>
                 <div className="w-full h-full bg-gray-500">
                     <Room></Room>
-                </div>
+                </div> */}
             </main>
         </div>
     )

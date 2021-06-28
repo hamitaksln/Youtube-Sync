@@ -20,4 +20,4 @@ export const COLOR_LIST = [
     "#00b33e"
 ]
 
-export const SOCKET_URL = "http://localhost:5000"
+export const SOCKET_URL = "http://192.168.1.37:5000"
