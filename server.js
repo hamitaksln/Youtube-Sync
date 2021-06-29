@@ -18,14 +18,14 @@ const {
 } = require("./utils/rooms");
 
 const app = express();
-app.use(express.static(path.join(__dirname, "../client/out")));
+app.use(express.static(path.join(__dirname, "./client/out")));
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/out/index.html"));
+    res.sendFile(path.join(__dirname, "./client/out/index.html"));
 });
 
 app.get("/rooms/:pid", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/out/rooms/[pid].html"));
+    res.sendFile(path.join(__dirname, "./client/out/rooms/[pid].html"));
 });
 
 const server = app.listen(PORT, () =>
