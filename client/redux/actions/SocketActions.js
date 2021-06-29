@@ -4,7 +4,7 @@ import { SOCKET_URL } from "../../constants"
 
 export const initSocket = () => {
     return (dispatch) => {
-        dispatch({type:INIT_SOCKET, socket:openSocket(SOCKET_URL)})
-        // dispatch({ type: INIT_SOCKET, socket: openSocket() })
+        // dispatch({type:INIT_SOCKET, socket:openSocket(SOCKET_URL)})
+        dispatch({ type: INIT_SOCKET, socket: openSocket() })
     }
 }
