@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux"
 import Room from "../../components/room"
 import Header from "../../components/header"
 import { initSocket } from "../../redux/actions/SocketActions"
-import { setUsers } from "../../redux/actions/RoomActions"
+import { setVideoId } from "../../redux/actions/RoomActions"
 import Router from "next/router"
+import Head from "next/head"
 
 const Rooms = () => {
     const socket = useSelector((state) => state.socketReducer.socket)
@@ -18,6 +19,8 @@ const Rooms = () => {
         if (socket === null) {
             dispatch(initSocket())
         }
+
+        return () => dispatch(setVideoId(""))
     }, [])
 
     useEffect(() => {
@@ -44,13 +47,27 @@ const Rooms = () => {
     }, [socket, pid])
 
     return (
-        <div className="w-full h-full flex flex-col">
-            <Header><div onClick={() => Router.push("/")}>home</div></Header>
-            {isRoomFound ? (
-                <Room pid={pid}></Room>
-            ) : (
-                <div className="text-white">Room not found.</div>
-            )}
+        <div className="site-container">
+            <Head>
+                <title>Youtube SYNC</title>
+                <meta
+                    name="viewport"
+                    content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
+                />
+            </Head>
+            <main className="w-full h-full flex flex-col">
+                <div className="w-full h-16">
+                    <Header></Header>
+                </div>
+
+                {isRoomFound ? (
+                    <div className="w-full h-full bg-gray-500">
+                        <Room pid={pid}></Room>
+                    </div>
+                ) : (
+                    <div className="text-white">Room not found.</div>
+                )}
+            </main>
         </div>
     )
 }

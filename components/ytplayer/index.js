@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import Youtube from "react-youtube"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { PLAYER_STATE } from "../../constants"
+import { setVideoId } from "../../redux/actions/RoomActions"
 
 function YTPlayer() {
     const socket = useSelector((state) => state.socketReducer.socket)
-
+    const videoId = useSelector((state) => state.roomReducer.videoId)
+    const dispatch = useDispatch()
     const [playerState, setPlayerState] = useState(null)
     const [ytPlayer, setYtPlayer] = useState()
     const [playerStartingTime, setPlayerStartingTime] = useState(0)
@@ -18,6 +20,13 @@ function YTPlayer() {
             socket.on("starting-time", (currentServerTime) => {
                 console.log(currentServerTime, ytPlayer)
                 setPlayerStartingTime(currentServerTime)
+            })
+
+            socket.on("room-video-id", (videoId) => {
+                console.log(videoId)
+                if (videoId) {
+                    dispatch(setVideoId(videoId))
+                }
             })
         }
 
@@ -120,11 +129,10 @@ function YTPlayer() {
 
     return (
         <div className="w-full h-full bg-red-600 rounded overflow-hidden">
-            <div className="absolute text-white">{socket && socket.id}</div>
             <Youtube
                 // ref={ref}
                 onClick={() => console.log("sa")}
-                videoId={"_mU6_c9dvac"} // defaults -> null
+                videoId={videoId} // defaults -> null
                 // id={string}                       // defaults -> null
                 //   className="h-[100%]  bg-blue-100"               // defaults -> null
                 containerClassName="h-full" // defaults -> ''
