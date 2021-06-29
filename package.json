@@ -9,7 +9,7 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "dev:server": "cd client && npm run build && cd .. && npm run start",
     "start": "node server.js",
-    "heroku-postbuild": "npm install && cd .. && cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build && cd .. && cd server && node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "build-run": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build && cd .. && node server.js"
   },
   "author": "",
