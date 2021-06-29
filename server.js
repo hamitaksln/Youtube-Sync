@@ -2,8 +2,11 @@ const PORT = process.env.PORT || 5000;
 
 const path = require("path");
 const express = require("express");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const { Server } = require("socket.io");
 const { v4: uuidv4 } = require("uuid");
+const youtubeRoute = require("./routes/youtube");
 const {
     userJoin,
     getCurrentUser,
@@ -18,6 +21,9 @@ const {
 } = require("./utils/rooms");
 
 const app = express();
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("common"));
 app.use(express.static(path.join(__dirname, "./client/out")));
 
 app.get("/", (req, res) => {
@@ -27,6 +33,8 @@ app.get("/", (req, res) => {
 app.get("/rooms/:pid", (req, res) => {
     res.sendFile(path.join(__dirname, "./client/out/rooms/[pid].html"));
 });
+
+app.use("/api/youtube", youtubeRoute);
 
 const server = app.listen(PORT, () =>
     console.log(`Server listening on ${PORT}`)
