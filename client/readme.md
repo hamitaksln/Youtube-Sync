@@ -1,1 +1,0 @@
-# Youtube-Sync with NextJS and Socket-IO
