@@ -65,7 +65,6 @@ io.on("connection", (socket) => {
         const room = getCurrentRoom(user.roomId);
 
         room.videoId = videoId;
-        // socket.broadcast.to(room.id)
         io.to(user.roomId).emit("room-video-id", room.videoId);
     });
 
