@@ -5,7 +5,7 @@
 @layer components {
     
     .site-container {
-        @apply bg-blue-900
+        @apply bg-gray-900
         w-screen h-screen;
     }
 }

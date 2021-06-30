@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 5000;
 
 const path = require("path");
 const express = require("express");
+const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { Server } = require("socket.io");
@@ -21,8 +22,14 @@ const {
 } = require("./utils/rooms");
 
 const app = express();
+
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
 app.use(morgan("common"));
 app.use(express.static(path.join(__dirname, "./client/out")));
 

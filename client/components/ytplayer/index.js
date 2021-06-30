@@ -128,19 +128,15 @@ function YTPlayer() {
     }
 
     return (
-        <div className="w-full h-full bg-red-600 rounded overflow-hidden">
-            <Youtube
-                // ref={ref}
+        <div className="w-full h-full bg-[#282828] rounded overflow-hidden">
+            {videoId ? <Youtube
                 onClick={() => console.log("sa")}
-                videoId={videoId} // defaults -> null
-                // id={string}                       // defaults -> null
-                //   className="h-[100%]  bg-blue-100"               // defaults -> null
-                containerClassName="h-full" // defaults -> ''
+                videoId={videoId}
+                containerClassName="h-full"
                 opts={{
                     height: "100%",
                     width: "100%",
                     playerVars: {
-                        //   rel: 0,
                         origin: "https://you-sync.herokuapp.com/",
                         rel: 0,
                         showinfo: 0,
@@ -150,22 +146,12 @@ function YTPlayer() {
                         iv_load_policy: 3,
                         autoplay: 1,
                         start: 0
-                        // https://developers.google.com/youtube/player_parameters
-                        //   autoplay: 1,
                     }
                 }}
-                // defaults -> {}
+                onReady={handleOnReady}
+                onStateChange={handleStateChange}
 
-                onReady={handleOnReady} // defaults -> noop
-                // onPlay={handleOnPlay} // defaults -> noop
-                // onPause={handleOnPause} // defaults -> noop
-                onStateChange={handleStateChange} // defaults -> noop
-
-                // onEnd={func}                      // defaults -> noop
-                // onError={func}                    // defaults -> noop
-                // onPlaybackRateChange={func}       // defaults -> noop
-                // onPlaybackQualityChange={func}    // defaults -> noop
-            />
+            />: <div className="w-full h-full flex justify-center items-center font-mono"><span className="text-white text-4xl">NO VIDEO</span></div>}
         </div>
     )
 }

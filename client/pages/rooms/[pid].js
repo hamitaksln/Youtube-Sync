@@ -5,8 +5,8 @@ import Room from "../../components/room"
 import Header from "../../components/header"
 import { initSocket } from "../../redux/actions/SocketActions"
 import { setVideoId } from "../../redux/actions/RoomActions"
-import Router from "next/router"
 import Head from "next/head"
+import YouSyncButton from "../../components/you-sync-button"
 
 const Rooms = () => {
     const socket = useSelector((state) => state.socketReducer.socket)
@@ -55,17 +55,24 @@ const Rooms = () => {
                     content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
                 />
             </Head>
-            <main className="w-full h-full flex flex-col">
-                <div className="w-full h-16">
-                    <Header></Header>
-                </div>
-
+            <main className="w-full h-full">
                 {isRoomFound ? (
-                    <div className="w-full h-full bg-gray-500">
-                        <Room pid={pid}></Room>
+                    <div className="w-full h-full flex flex-col">
+                        <div className="w-full h-16">
+                            <Header></Header>
+                        </div>
+                        <div className="w-full h-full bg-gray-500">
+                            <Room pid={pid}></Room>
+                        </div>
                     </div>
                 ) : (
-                    <div className="text-white">Room not found.</div>
+                    // <div className="text-white">Room not found.</div>
+                    <div className="w-full h-full flex flex-col justify-center items-center font-mono gap-4">
+                        <span className="text-white text-4xl">
+                            Room not found.
+                        </span>
+                        <YouSyncButton></YouSyncButton>
+                    </div>
                 )}
             </main>
         </div>
