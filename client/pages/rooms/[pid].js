@@ -58,7 +58,7 @@ const Rooms = () => {
             <main className="w-full h-full">
                 {isRoomFound ? (
                     <div className="w-full h-full flex flex-col">
-                        <div className="w-full h-16">
+                        <div className="w-full sm:h-16">
                             <Header></Header>
                         </div>
                         <div className="w-full h-full bg-gray-500">

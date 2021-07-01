@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 import axios from "axios"
 import getYouTubeID from "get-youtube-id"
 import Input from "../ui/input"
@@ -7,16 +8,15 @@ import VideoSearchResults from "../video-search-results"
 import { DebounceInput } from "react-debounce-input"
 import cx from "classnames"
 import useComponentVisible from "../../hooks/useComponentVisible"
-import { API_URL } from "../../constants"
+import { SERVER_URL } from "../../constants"
 
 function VideoIdInput() {
+    const socket = useSelector((state) => state.socketReducer.socket)
     const [searchVideos, setSearchVideos] = useState([])
     const [inputValue, setInputValue] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const { ref, isComponentVisible, setIsComponentVisible } =
         useComponentVisible(false)
-
-    console.log({API_URL})
 
     useEffect(() => {
         const query = inputValue
@@ -33,38 +33,39 @@ function VideoIdInput() {
         handleSearchVideo(query)
     }
 
-    const handleSearchVideo = (query) => {
+    const handleSearchVideo = async (query) => {
         if (query.trim() === "" || query.slice(-1) === " ") return
         setIsComponentVisible(true)
         setIsLoading(true)
 
+        let requestUrl = ""
+
         if (query.includes("http") || query.includes("https")) {
             const videoId = getYouTubeID(query)
-            axios
-                .get(`${API_URL}/api/youtube/${videoId}`)
-                .then((res) => {
-                    const searchResults = res.data.data
-                    setSearchVideos(searchResults)
-                    setIsLoading(false)
-
-                    console.log(searchResults)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            requestUrl = `${SERVER_URL}/api/youtube/${videoId}`
         } else {
-            axios
-                .get(`${API_URL}/api/youtube/search/${inputValue}`)
-                .then((res) => {
-                    const searchResults = res.data.data
-                    setSearchVideos(searchResults)
-                    setIsLoading(false)
-                    // setIsComponentVisible(true)
-                    console.log(searchResults)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            requestUrl = `${SERVER_URL}/api/youtube/search/${inputValue}`
+        }
+
+        axios
+            .get(requestUrl)
+            .then((res) => {
+                const searchResults = res.data.data
+                setSearchVideos(searchResults)
+                setIsLoading(false)
+
+                console.log(searchResults)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    const handleVideoClick = (videoId) => {
+        console.log(videoId)
+        if (videoId) {
+            socket.emit("change-video-id", videoId)
+            setIsComponentVisible(false)
         }
     }
 
@@ -97,13 +98,13 @@ function VideoIdInput() {
                 )}
                 <div
                     className={cx("w-full h-full", {
-                        "opacity-0": !isComponentVisible,
-                        "opacity-100": isComponentVisible
+                        "hidden": !isComponentVisible
                     })}
                 >
                     <VideoSearchResults
                         isLoading={isLoading}
                         videos={searchVideos}
+                        handleVideoClick={handleVideoClick}
                     ></VideoSearchResults>
                 </div>
             </div>

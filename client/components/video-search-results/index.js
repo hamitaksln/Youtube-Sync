@@ -1,10 +1,11 @@
 import cx from "classnames"
 
-function VideoSearchResults({ isLoading, videos }) {
+function VideoSearchResults({ isLoading, videos, handleVideoClick }) {
     return (
         <div className={cx("w-full h-full bg-gray-700 rounded p-2 space-y-1")}>
             {videos.slice(0, 5).map((video) => (
                 <div
+                    onClick={() => handleVideoClick(video.videoId)}
                     className={cx(
                         "w-full h-24 flex items-center gap-2 bg-gray-600 p-2 rounded hover:bg-gray-500 cursor-pointer",
                         { blur: isLoading }

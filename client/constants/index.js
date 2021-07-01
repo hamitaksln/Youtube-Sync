@@ -20,6 +20,5 @@ export const COLOR_LIST = [
     "#00b33e"
 ]
 
-export const SOCKET_URL = "http://localhost:5000"
-// export const API_URL = "http://localhost:5000"
-export const API_URL = ""
+// export const SERVER_URL = "http://localhost:5000"
+export const SERVER_URL = ""
