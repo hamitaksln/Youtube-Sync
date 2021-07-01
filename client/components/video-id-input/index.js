@@ -7,6 +7,7 @@ import VideoSearchResults from "../video-search-results"
 import { DebounceInput } from "react-debounce-input"
 import cx from "classnames"
 import useComponentVisible from "../../hooks/useComponentVisible"
+import { API_URL } from "../../constants"
 
 function VideoIdInput() {
     const [searchVideos, setSearchVideos] = useState([])
@@ -14,6 +15,8 @@ function VideoIdInput() {
     const [isLoading, setIsLoading] = useState(false)
     const { ref, isComponentVisible, setIsComponentVisible } =
         useComponentVisible(false)
+
+    console.log({API_URL})
 
     useEffect(() => {
         const query = inputValue
@@ -38,7 +41,7 @@ function VideoIdInput() {
         if (query.includes("http") || query.includes("https")) {
             const videoId = getYouTubeID(query)
             axios
-                .get(`http://localhost:5000/api/youtube/${videoId}`)
+                .get(`${API_URL}/api/youtube/${videoId}`)
                 .then((res) => {
                     const searchResults = res.data.data
                     setSearchVideos(searchResults)
@@ -51,7 +54,7 @@ function VideoIdInput() {
                 })
         } else {
             axios
-                .get(`http://localhost:5000/api/youtube/search/${inputValue}`)
+                .get(`${API_URL}/api/youtube/search/${inputValue}`)
                 .then((res) => {
                     const searchResults = res.data.data
                     setSearchVideos(searchResults)
