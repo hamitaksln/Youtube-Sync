@@ -2,7 +2,7 @@ const users = [];
 
 const userJoin = (id, username, roomId) => {
     const user = { id, username, roomId };
-
+    
     users.push(user);
     return user;
 };
@@ -23,9 +23,14 @@ const getRoomUsers = (roomId) => {
     return users.filter((user) => user.roomId === roomId);
 };
 
+const getAllUsers = () => {
+    return users;
+};
+
 module.exports = {
     userJoin,
     getCurrentUser,
     userLeave,
     getRoomUsers,
+    getAllUsers,
 };

@@ -9,9 +9,8 @@ const getVideoTitle = (pageSource) => {
 };
 
 router.get("/:videoId", async (req, res) => {
-    //getVideoTitle();
     const videoId = req.params.videoId;
-    const response = axios
+    axios
         .get(`https://www.youtube.com/watch?v=${videoId}`)
         .then((response) => {
             const title = getVideoTitle(response.data);
@@ -24,14 +23,9 @@ router.get("/:videoId", async (req, res) => {
             console.log(error);
             res.status(404).json({ status: "fail", message: error.message });
         });
-    // console.log(response.data);
-
-    // console.log(response);
-    // res.send("Youtube");
 });
 
 router.get("/search/:query", async (req, res) => {
-    //getVideoTitle();
     const query = req.params.query;
     const data = JSON.stringify({
         context: {
@@ -91,7 +85,6 @@ router.get("/search/:query", async (req, res) => {
                     }
                 })
                 .filter((video) => video.videoId);
-            console.log(videoResults)
             res.status(200).json({ status: "ok", data: videoResults });
         })
         .catch((error) => {

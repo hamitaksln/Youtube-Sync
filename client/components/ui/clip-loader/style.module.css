@@ -23,12 +23,12 @@
 	}
 	50% {
 		transform: rotate(180deg) scale(1);
-		border-color: #434343;
+		border-color: #15151d;
 		border-bottom-color: transparent;
 	}
 	75% {
 		transform: rotate(270deg) scale(1);
-		border-color: #434343;
+		border-color: #111827;
 		border-bottom-color: transparent;
 	}
 	100% {

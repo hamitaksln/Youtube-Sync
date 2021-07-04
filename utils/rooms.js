@@ -4,6 +4,7 @@ const roomCreate = (id, createdDate, owner) => {
     const room = {
         id,
         createdDate,
+        lastLeaveDate: createdDate,
         owner,
         videoId: null,
         playerStatus: {

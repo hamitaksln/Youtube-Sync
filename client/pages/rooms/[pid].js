@@ -20,7 +20,12 @@ const Rooms = () => {
             dispatch(initSocket())
         }
 
-        return () => dispatch(setVideoId(""))
+        return () => {
+            if (socket) {
+                socket.emit("user-leave")
+            }
+            dispatch(setVideoId(""))
+        }
     }, [])
 
     useEffect(() => {
@@ -30,12 +35,9 @@ const Rooms = () => {
 
     useEffect(() => {
         if (socket && pid) {
-            console.log(socket, pid)
-
-            socket.on("check-if-room-exists", (isRoomFound) => {
-                console.log(isRoomFound)
+            socket.on("check-if-room-exists", ({ isRoomFound, roomId }) => {
                 if (isRoomFound) {
-                    socket.emit("join-room", pid)
+                    socket.emit("join-room", roomId)
                 }
                 setIsRoomFound(isRoomFound)
             })
@@ -44,7 +46,7 @@ const Rooms = () => {
                 socket.emit("check-if-room-exists", pid)
             }
         }
-    }, [socket, pid])
+    }, [socket, pid, isRoomFound])
 
     return (
         <div className="site-container">
@@ -66,7 +68,6 @@ const Rooms = () => {
                         </div>
                     </div>
                 ) : (
-                    // <div className="text-white">Room not found.</div>
                     <div className="w-full h-full flex flex-col justify-center items-center font-mono gap-4">
                         <span className="text-white text-4xl">
                             Room not found.

@@ -53,8 +53,6 @@ function VideoIdInput() {
                 const searchResults = res.data.data
                 setSearchVideos(searchResults)
                 setIsLoading(false)
-
-                console.log(searchResults)
             })
             .catch((err) => {
                 console.log(err)
@@ -62,7 +60,6 @@ function VideoIdInput() {
     }
 
     const handleVideoClick = (videoId) => {
-        console.log(videoId)
         if (videoId) {
             socket.emit("change-video-id", videoId)
             setIsComponentVisible(false)

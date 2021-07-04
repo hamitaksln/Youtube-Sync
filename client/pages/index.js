@@ -4,15 +4,18 @@ import Home from "../components/home"
 import Room from "../components/room"
 import Header from "../components/header"
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { initSocket } from "../redux/actions/SocketActions"
 import { setVideoId } from "../redux/actions/RoomActions"
 
 function HomePage() {
+    const socket = useSelector((state) => state.socketReducer.socket)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(initSocket())
+        if (socket === null) {
+            dispatch(initSocket())
+        }
         const script = document.createElement("script")
         script.src =
             "https://cdn.jsdelivr.net/npm/hockeystack@latest/hockeystack.min.js"

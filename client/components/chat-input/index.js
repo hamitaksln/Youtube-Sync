@@ -17,7 +17,6 @@ function ChatInput({ sendNewMessage }) {
     }
 
     const handleSendClick = () => {
-        console.log(currentMessage)
         if (currentMessage.trim()) {
             sendNewMessage(currentMessage)
             setCurrentMessage("")

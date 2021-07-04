@@ -16,14 +16,11 @@ function YTPlayer() {
 
     useEffect(() => {
         if (socket) {
-            // console.log("SOCKET")
             socket.on("starting-time", (currentServerTime) => {
-                console.log(currentServerTime, ytPlayer)
                 setPlayerStartingTime(currentServerTime)
             })
 
             socket.on("room-video-id", (videoId) => {
-                console.log(videoId)
                 if (videoId) {
                     dispatch(setVideoId(videoId))
                 }
@@ -31,15 +28,11 @@ function YTPlayer() {
         }
 
         if (socket && ytPlayer) {
-            console.log("SOCKET LISTENING")
             socket.on("set-player-status", (playerState) => {
-                // console.log(playerState)
                 setPlayerState(playerState)
             })
             socket.on("set-player-current-time", (playerCurrentTime) => {
-                // console.log("set-player-current-time")
                 if (ytPlayer) {
-                    // console.log("coming from serveR: " + playerCurrentTime)
                     ytPlayer.seekTo(playerCurrentTime, true)
                 }
             })
@@ -66,7 +59,6 @@ function YTPlayer() {
             if (player && player.getCurrentTime) {
                 if (socket) {
                     if (player.getPlayerState() === 1) {
-                        // console.log("player current time is updated")
                         socket.emit(
                             "update-server-time",
                             player.getCurrentTime()
@@ -82,13 +74,6 @@ function YTPlayer() {
                 const diff =
                     videoTimeStack.current[1] - videoTimeStack.current[0]
                 if (Math.abs(diff) > 1.1) {
-                    // console.log({ shouldEmitTime })
-                    console.log(videoTimeStack.current, {
-                        dif:
-                            videoTimeStack.current[1] -
-                            videoTimeStack.current[0]
-                    })
-
                     socket.emit(
                         "set-player-current-time",
                         player.getCurrentTime()
@@ -108,7 +93,6 @@ function YTPlayer() {
 
     const handlePlayerStartingTime = useCallback(
         (player) => {
-            console.log(playerStartingTime)
             player.seekTo(playerStartingTime)
         },
         [playerStartingTime]
@@ -124,13 +108,11 @@ function YTPlayer() {
         setYtPlayer(player)
         handleTimeChanging(player)
         handlePlayerStartingTime(player)
-        console.log("PLAYER INITIATED")
     }
 
     return (
         <div className="w-full h-full bg-[#282828] rounded overflow-hidden">
             {videoId ? <Youtube
-                onClick={() => console.log("sa")}
                 videoId={videoId}
                 containerClassName="h-full"
                 opts={{

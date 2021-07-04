@@ -11,7 +11,6 @@ function ChatUsers() {
     useEffect(() => {
         if (socket) {
             socket.on("users", (users) => {
-                // console.log(users)
                 dispatch(setUsers(users.map((user) => user.id)))
             })
         }

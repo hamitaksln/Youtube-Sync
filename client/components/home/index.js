@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import Button from "../../components/ui/button"
-import { v4 as uuidv4 } from "uuid"
+import JoinRoom from "../../components/join-room"
 import Router from "next/router"
 
 function Home() {
@@ -10,13 +10,10 @@ function Home() {
     useEffect(() => {
         if (socket) {
             socket.on("room-created", (roomId) => {
-                console.log(roomId)
                 const { pathname } = Router
                 if (pathname == "/") {
-                    console.log(pathname)
                     Router.push(`/rooms/${roomId}`)
                 }
-                // Router.push()
             })
         }
     }, [socket])
@@ -26,11 +23,9 @@ function Home() {
     }
 
     return (
-        <div className="w-full h-full flex items-center justify-center">
-            {/* <div onClick={} className="text-3xl text-white rounded border p-2 hover:bg-gray-800 cursor-pointer">
-                Create Room
-            </div> */}
-            <Button click={handleCreateRoomClick}>Create Room</Button>
+        <div className="w-full h-full flex flex-col gap-4 items-center justify-center">
+            <Button width="w-[12rem]" click={handleCreateRoomClick}>Create Room</Button>
+            <JoinRoom></JoinRoom>
         </div>
     )
 }

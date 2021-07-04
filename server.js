@@ -6,13 +6,14 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { Server } = require("socket.io");
-const { v4: uuidv4 } = require("uuid");
+const shortid = require('shortid');
 const youtubeRoute = require("./routes/youtube");
 const {
     userJoin,
     getCurrentUser,
     userLeave,
     getRoomUsers,
+    getAllUsers,
 } = require("./utils/users");
 const {
     roomCreate,
@@ -49,10 +50,32 @@ const server = app.listen(PORT, () =>
 const io = new Server(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
+    const checkEmptyRooms = () => {
+        const rooms = getRooms();
+        rooms.forEach((room) => {
+            if (getRoomUsers(room.id).length === 0) {
+                const date = new Date();
+                console.log(
+                    `${room.id} is empty for ${
+                        (date - room.lastLeaveDate) / 1000
+                    } seconds.`
+                );
+
+                if ((date - room.lastLeaveDate) / 1000 >= 5) {
+                    roomDelete(room.id);
+                }
+            }
+        });
+    };
+
+    checkEmptyRooms();
+
     socket.on("join-room", (roomId) => {
+        if (getAllUsers().find((user) => user.id === socket.id)) {
+            return;
+        }
         const user = userJoin(socket.id, "username", roomId);
         const room = getCurrentRoom(user.roomId);
-
         socket.join(user.roomId);
 
         socket.broadcast.to(user.roomId).emit("new-message", {
@@ -61,7 +84,11 @@ io.on("connection", (socket) => {
             color: "#FFFFF",
         });
 
-        console.log("user-joined", getRoomUsers(user.roomId), room);
+        console.log(
+            `user-joined ${socket.id} total rooms: ${
+                getRooms().length
+            } total users: ${getAllUsers().length}`
+        );
         io.to(user.roomId).emit("users", getRoomUsers(user.roomId));
 
         const currentPlayerTime = room.playerTime.current;
@@ -84,23 +111,19 @@ io.on("connection", (socket) => {
     });
 
     socket.on("check-if-room-exists", (roomId) => {
-        // console.log(roomId, rooms);
         const rooms = getRooms();
         const isRoomFound = rooms.some((room) => room.id === roomId);
-        socket.emit("check-if-room-exists", isRoomFound);
+        socket.emit("check-if-room-exists", { isRoomFound, roomId });
     });
 
     socket.on("create-room", () => {
-        const roomId = uuidv4();
+        const roomId = shortid.generate()
         const date = new Date();
 
         const room = roomCreate(roomId, date, socket.id);
-        console.log(room);
+        console.log(`room-created ${roomId}`);
         socket.emit("room-created", room.id);
     });
-
-    // socket.emit("starting-time", currentServerTime);
-    // io.emit("users", users);
 
     socket.on("new-message", (message) => {
         const user = getCurrentUser(socket.id);
@@ -110,12 +133,6 @@ io.on("connection", (socket) => {
             text: message.text,
             color: message.color,
         });
-
-        // io.to(user.roomId).emit("new-message", {
-        //     username: user.id,
-        //     text: "New user",
-        //     color: "#FFFFF",
-        // });
     });
 
     socket.on("update-server-time", (playerCurrentTime) => {
@@ -126,10 +143,7 @@ io.on("connection", (socket) => {
         if (socket.id !== users[0].id) return;
 
         room.playerTime.current = playerCurrentTime;
-        console.log(room);
-
-        // if (socket.id !== referenceSocketId) return;
-        // currentServerTime = currentTime;
+        console.log(`Current time: ${playerCurrentTime}`);
     });
 
     socket.on("set-player-status", (playerState) => {
@@ -140,7 +154,6 @@ io.on("connection", (socket) => {
         const previousPlayerStatus = room.playerStatus.previous;
         const currentPlayerStatus = playerState;
         room.playerStatus.current = currentPlayerStatus;
-        // console.log({ user, room });
 
         if (previousPlayerStatus && currentPlayerStatus) {
             if (previousPlayerStatus !== currentPlayerStatus) {
@@ -170,32 +183,46 @@ io.on("connection", (socket) => {
         const previousPlayerTime = room.playerTime.previous;
         const currentPlayerTime = playerCurrentTime;
         room.playerTime.current = currentPlayerTime;
-        console.log({ playerCurrentTime, room });
         if (previousPlayerTime !== null && currentPlayerTime !== null) {
             const timeDifference = Math.abs(
                 previousPlayerTime - currentPlayerTime
             );
             if (timeDifference > 1.1) {
                 if (!playerCurrentTime) return;
-                console.log(currentPlayerTime);
+                console.log(`Current time: ${currentPlayerTime}`);
                 socket.broadcast
                     .to(room.id)
                     .emit("set-player-current-time", playerCurrentTime);
             }
         }
     });
-    socket.on("disconnect", () => {
+
+    const leaveOrDisconnect = () => {
         const user = userLeave(socket.id);
 
         if (user) {
+            const room = getCurrentRoom(user.roomId);
+            room.lastLeaveDate = new Date();
             io.to(user.roomId).emit("new-message", {
                 username: user.id,
                 text: "User left",
                 color: "#FFFFF",
             });
 
-            console.log("user disconnected", getRoomUsers(user.roomId));
             io.to(user.roomId).emit("users", getRoomUsers(user.roomId));
+            console.log(
+                `user-disconnected ${socket.id} total rooms: ${
+                    getRooms().length
+                } total users: ${getAllUsers().length}`
+            );
         }
+    };
+
+    socket.on("user-leave", () => {
+        leaveOrDisconnect();
+    });
+
+    socket.on("disconnect", () => {
+        leaveOrDisconnect();
     });
 });

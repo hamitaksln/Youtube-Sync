@@ -16,7 +16,6 @@ function ChatMessages({ userColor }) {
     useEffect(() => {
         if (socket) {
             socket.on("new-message", (newMessage) => {
-                console.log(newMessage, socket.id)
                 const isSelf = newMessage.username === socket.id
                 if (newMessage) {
                     setMessages((prevValue) => [
