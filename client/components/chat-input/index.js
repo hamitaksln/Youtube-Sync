@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import Input from "../ui/input"
 
 function ChatInput({ sendNewMessage }) {
     const [currentMessage, setCurrentMessage] = useState("")
@@ -25,16 +26,15 @@ function ChatInput({ sendNewMessage }) {
 
     return (
         <div className="w-full h-full px-2 flex items-center gap-2">
-            <input
+            <Input
                 value={currentMessage}
                 placeholder="Send a message..."
                 onChange={(e) => setCurrentMessage(e.target.value)}
-                className="w-full h-full rounded p-2 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                type="text"
-            ></input>
+                ringColor="focus:ring-gray-900"
+            ></Input>
             <div
                 onClick={handleSendClick}
-                className="w-10 h-10 rounded-full bg-gray-800 flex justify-center items-center text-white font-bold cursor-pointer"
+                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-700 flex justify-center items-center text-white font-bold cursor-pointer"
             >
                 {">"}
             </div>
