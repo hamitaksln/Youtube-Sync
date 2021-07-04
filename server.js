@@ -119,6 +119,7 @@ io.on("connection", (socket) => {
     socket.on("create-room", () => {
         const roomId = shortid.generate()
         const date = new Date();
+        
 
         const room = roomCreate(roomId, date, socket.id);
         console.log(`room-created ${roomId}`);
