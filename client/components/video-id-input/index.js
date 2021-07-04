@@ -27,12 +27,6 @@ function VideoIdInput() {
         setInputValue(e.target.value)
     }
 
-    const handleVideoIdChangeClick = () => {
-        // socket.emit("change-video-id", inputValue)
-        const query = inputValue
-        handleSearchVideo(query)
-    }
-
     const handleSearchVideo = async (query) => {
         if (query.trim() === "" || query.slice(-1) === " ") return
         setIsComponentVisible(true)
@@ -79,13 +73,9 @@ function VideoIdInput() {
                 debounceTimeout={300}
                 placeholder="Search video or paste url."
             />
-            {/* <div onClick={handleVideoIdChangeClick} className="cursor-pointer">
-                Change
-            </div> */}
             <div
                 className={cx("w-full absolute top-[2.25rem] mt-1", {
                     "h-24": searchVideos.length === 0
-                    // "invisible": !isLoading
                 })}
             >
                 {isLoading && (
@@ -95,7 +85,7 @@ function VideoIdInput() {
                 )}
                 <div
                     className={cx("w-full h-full", {
-                        "hidden": !isComponentVisible
+                        hidden: !isComponentVisible
                     })}
                 >
                     <VideoSearchResults

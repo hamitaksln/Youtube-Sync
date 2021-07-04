@@ -1,37 +1,36 @@
 {
-  "name": "next-tailwind-boilerplate",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build && next export",
-    "start": "next start"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "classnames": "^2.3.1",
-    "d3": "^7.0.0",
-    "get-youtube-id": "^1.0.1",
-    "next": "^11.0.1",
-    "react": "^17.0.2",
-    "react-debounce-input": "^3.2.3",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.4",
-    "react-youtube": "^7.13.1",
-    "redux": "^4.1.0",
-    "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0",
-    "socket.io-client": "^4.1.2",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.2.6",
-    "postcss": "^8.3.5",
-    "prettier": "2.3.1",
-    "tailwindcss": "^2.2.2"
-  }
+    "name": "youtube-sync-client",
+    "version": "1.0.0",
+    "description": "Youtube-Sync Client",
+    "main": "index.js",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build && next export",
+        "start": "next start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "classnames": "^2.3.1",
+        "d3": "^7.0.0",
+        "get-youtube-id": "^1.0.1",
+        "next": "^11.0.1",
+        "react": "^17.0.2",
+        "react-debounce-input": "^3.2.3",
+        "react-dom": "^17.0.2",
+        "react-redux": "^7.2.4",
+        "react-youtube": "^7.13.1",
+        "redux": "^4.1.0",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.3.0",
+        "socket.io-client": "^4.1.2"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.2.6",
+        "postcss": "^8.3.5",
+        "prettier": "2.3.1",
+        "tailwindcss": "^2.2.2"
+    }
 }

@@ -1,27 +1,8 @@
 import cx from "classnames"
 
-const colorList = [
-    "#91ab01",
-    "#db5ec2",
-    "#8b7add",
-    "#6bcbef",
-    "#35cd96",
-    "#dfb610",
-    "#6eadf5",
-    "#e67072",
-    "#ba33dc",
-    "#00b33e"
-]
-
-const getRandomColor = () => {
-    const randomNumber = Math.floor(Math.random() * colorList.length)
-    return colorList[randomNumber]
-}
-
 function ChatMessage({ message }) {
     const { isSelf, username, text, color } = message
 
-    // getRandomColor()
     return (
         <div
             className={cx("w-full flex ", {

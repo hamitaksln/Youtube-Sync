@@ -8,7 +8,7 @@ const getRandomColor = (colorList) => {
     return colorList[randomNumber]
 }
 
-function Room({ pid }) {
+function Room() {
     const [userColor, setUserColor] = useState("#FFFFFF")
 
     useEffect(() => {

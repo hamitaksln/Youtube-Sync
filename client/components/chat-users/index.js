@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setUsers } from "../../redux/actions/RoomActions"
 import cx from "classnames"

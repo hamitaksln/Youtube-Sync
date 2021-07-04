@@ -3,11 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension"
 import thunk from "redux-thunk"
 import rootReducer from "../reducers/RootReducer"
 
-const composedEnhancer = composeWithDevTools(
-    // Add whatever middleware you actually want to use here
-    applyMiddleware(thunk)
-    // other store enhancers if any
-)
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunk))
 
 const store = createStore(rootReducer, composedEnhancer)
 export default store

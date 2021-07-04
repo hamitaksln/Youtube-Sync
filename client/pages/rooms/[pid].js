@@ -29,11 +29,6 @@ const Rooms = () => {
     }, [])
 
     useEffect(() => {
-        if (isRoomFound) {
-        }
-    }, [isRoomFound])
-
-    useEffect(() => {
         if (socket && pid) {
             socket.on("check-if-room-exists", ({ isRoomFound, roomId }) => {
                 if (isRoomFound) {
@@ -72,7 +67,9 @@ const Rooms = () => {
                         <span className="text-white text-4xl">
                             Room not found.
                         </span>
-                        <YouSyncButton></YouSyncButton>
+                        <div className="flex justify-center">
+                            <YouSyncButton></YouSyncButton>
+                        </div>
                     </div>
                 )}
             </main>
