@@ -28,7 +28,7 @@ function JoinRoom() {
             </Button>
 
             <div
-                className={cx("duration-100", {
+                className={cx("duration-100 w-[12rem]", {
                     "opacity-0": !isInputVisible,
                     "opacity-100": isInputVisible
                 })}
