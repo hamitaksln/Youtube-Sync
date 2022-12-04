@@ -1,7 +1,7 @@
 # Youtube-Sync
 <a href="https://you-sync.herokuapp.com/" target="_blank"><img src="https://i.ibb.co/KmDxT8V/youtube-sync-logo-w-name-s100.png" 
 alt="youtube-sync logo" /></a>
-### [you-sync.herokuapp.com](https://you-sync.herokuapp.com/)
+### [youtube-sync.fly.dev](https://youtube-sync.fly.dev/)
 Youtube-Sync is an app that provides you to watch Youtube videos synchronous and chat with your friends.
 ## Build and Run Client and Server
 
