@@ -7,7 +7,6 @@ RUN npm install
 
 COPY . .
 
-RUN cd client && npm install && npm run build
+RUN npm run build-apps
 
-EXPOSE 3333
 CMD ["npm","start"]
