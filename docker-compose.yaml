@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+    api:
+        container_name: you-sync-api
+        build:
+            context: ./
+        ports:
+            - "${PORT}:${PORT}"
+        image: api
+        restart: unless-stopped
+        expose:
+            - "${PORT}"
