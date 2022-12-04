@@ -18,7 +18,7 @@
         "get-youtube-id": "^1.0.1",
         "next": "^11.1.2",
         "react": "^17.0.2",
-        "react-debounce-input": "^3.2.3",
+        "react-debounce-input": "^3.3.0",
         "react-dom": "^17.0.2",
         "react-redux": "^7.2.4",
         "react-youtube": "^7.13.1",
